@@ -1,0 +1,146 @@
+use sql_project;
+
+
+###
+1.Retrieve all columns from the table.
+
+SELECT * FROM country_wise_latest;
+###
+
+###
+2.Retrieve the total number of confirmed cases for each country.
+
+SELECT country,confirmed FROM country_wise_latest;
+###
+
+###
+3.Retrieve the country and number of deaths where the number of deaths is greater than 100.
+
+SELECT country,deaths FROM country_wise_latest WHERE deaths > 1000;
+###
+
+###
+4.Retrieve the country and number of active cases where the number of active cases is less than 1000.
+
+SELECT country, active FROM country_wise_latest WHERE active < 1000;
+###
+
+###
+5.Retrieve the top 10 countries with the highest number of confirmed cases.
+
+SELECT country, confirmed FROM country_wise_latest ORDER BY confirmed DESC LIMIT 10;
+###
+
+###
+6.Retrieve the country, number of confirmed cases, and recovery rate, only for countries with a recovery rate greater than 50%.
+
+SELECT country, confirmed, (recovered/confirmed) AS recovery_rate FROM country_wise_latest WHERE (recovered/confirmed) > 0.5;
+###
+
+###
+7.Retrieve the country and the total number of cases (confirmed + deaths + recovered).
+
+SELECT country, (confirmed + deaths + recovered) AS total_cases FROM country_wise_latest;
+###
+
+
+###
+8.Retrieve the country and the average number of confirmed cases per day for each country.
+
+SELECT country, confirmed / 7 AS avg_confirmed_per_day FROM country_wise_latest;
+###
+
+###
+9.Retrieve the country and the total number of deaths as a percentage of the total number of cases for each country.
+
+SELECT country, (deaths / confirmed) * 100 AS death_percentage FROM country_wise_latest;
+###
+
+###
+10.Retrieve the country and the difference in the number of confirmed cases between the current week and the previous week.
+
+SELECT country, confirmed - "confirmed last week" AS confirmed_difference FROM country_wise_latest;
+###
+
+###
+11.Retrieve the country only for countries with a positive percentage change in confirmed cases compared to previous week.
+
+SELECT country FROM country_wise_latest WHERE "1 week % change" > 0;
+###
+
+###
+12.Retrieve the country and the total number of active cases (confirmed - deaths - recovered) for each country.
+
+SELECT country, confirmed - deaths - recovered AS active_cases FROM country_wise_latest;
+###
+
+###
+13.Retrieve the country and the number of new deaths reported in the last 24 hours, only for countries with a recovery rate above 90%.
+
+SELECT country,deaths FROM country_wise_latest WHERE (recovered / confirmed) > 0.9;
+###
+
+###
+14.Retrieve the top 3 countries with the highest recovery rate (recovered/confirmed) for countries with at least 1000 confirmed cases.
+
+SELECT country, (recovered / confirmed) AS recovery_rate FROM country_wise_latest
+WHERE confirmed >= 1000
+ORDER BY recovery_rate DESC
+LIMIT 3;
+###
+
+###
+15.Retrieve the top 5 countries with the highest number of deaths per day and round the deaths per day.
+
+SELECT country, round((deaths / 7)) AS deaths_per_day
+FROM country_wise_latest
+ORDER BY deaths_per_day DESC
+LIMIT 5;
+###
+
+###
+16.Retrieve the country with the highest recovery rate among countries with at least 10000 confirmed cases and more than 100 deaths.
+
+SELECT country, (recovered / confirmed) AS recovery_rate
+FROM country_wise_latest
+WHERE confirmed >= 10000 AND deaths > 100
+ORDER BY recovery_rate DESC
+LIMIT 1;
+###
+
+###
+17.Retrieve the top 5 countries with the highest difference in the number of confirmed cases compared to the previous week.
+
+SELECT country, confirmed - "confirmed last week" AS confirmed_difference
+FROM country_wise_latest
+ORDER BY confirmed_difference DESC
+LIMIT 5;
+###
+
+###
+18.Retrieve the country with the highest number of active cases (confirmed - deaths - recovered).
+
+SELECT country, confirmed - deaths - recovered AS active_cases
+FROM country_wise_latest
+ORDER BY active_cases DESC
+LIMIT 1;
+###
+
+###
+19.Retrieve the country and the mortality rate (deaths per 100 cases) for countries with more than 10,000 confirmed cases, ordered by the mortality rate in descending order.
+
+SELECT country, (deaths / confirmed) * 100 AS mortality_rate
+FROM country_wise_latest
+WHERE confirmed > 10000
+ORDER BY mortality_rate DESC;
+###
+
+###
+20.Retrieve the country and the average number of confirmed cases per day over the past two weeks, only for countries with a recovery rate above 90% and a death rate below 2%.
+
+SELECT country, AVG(confirmed) / 14 AS avg_cases_per_day
+FROM country_wise_latest
+WHERE (recovered / confirmed) > 0.9 AND (deaths / confirmed) < 0.02
+GROUP BY country;
+###
+
